@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Этюд — шахматный тренажёр
 
-# Run and deploy your AI Studio app
+Веб-приложение для тренировки тактических навыков в шахматах: решение задач, игра против движка и онлайн-партии 1 на 1.
 
-This contains everything you need to run your app locally.
+## Возможности
 
-View your app in AI Studio: https://ai.studio/apps/62e44c54-f869-4cf0-92a7-1b29b145b927
+- **Каталог задач** — 117 позиций по темам: мат в 1, мат в 2, вилка, связка, вскрытое нападение, последняя горизонталь и другие. Фильтры по теме, сложности и статусу решения.
+- **Тренажёр** — проверка хода пользователя по эталонному решению, подсказки, таймер, история ходов, автоматический ответ соперника в многоходовых задачах.
+- **Игра с ботом** — Stockfish WASM в Web Worker, 8 уровней сложности от 800 до 2850 Elo, живая оценка позиции, таймеры, взятые фигуры.
+- **Онлайн 1 на 1** — комнаты по коду через WebSocket, чат, таймеры, реванш, сдача.
+- **Статистика** — процент решённых задач, точность, среднее время, разбивка по темам и сложности.
 
-## Run Locally
+## Стек
 
-**Prerequisites:**  Node.js
+| Слой | Технология |
+|---|---|
+| Фронтенд | React 19, TypeScript, Tailwind CSS 4 |
+| Шахматная логика | chess.js |
+| Движок | Stockfish WASM (Web Worker) |
+| Бэкенд | Express + WebSocket (ws) |
+| Сборка | Vite 8 |
+| Звук | Web Audio API |
 
+## Запуск
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**Требуется:** Node.js 20+.
+
+```bash
+npm install
+npm run dev
