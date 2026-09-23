@@ -1,0 +1,6 @@
+{
+  "name": "Этюд — шахматный тренажёр",
+  "description": "Веб-приложение для решения шахматных задач с проверкой ходов, подсказками, отслеживанием прогресса и игрой против Stockfish WASM в Web Worker.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
