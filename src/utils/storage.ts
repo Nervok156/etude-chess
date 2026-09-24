@@ -3,7 +3,7 @@ import { Puzzle, PuzzleProgress, ProgressStats } from '../types.ts';
 const STORAGE_KEY = 'etude_chess_progress_v1';
 
 export function getStoredProgress(): Record<number, PuzzleProgress> {
-  if (typeof window === 'undefined') return {};
+  if (typeof localStorage === 'undefined') return {};
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return {};
