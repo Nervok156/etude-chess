@@ -76,8 +76,8 @@ export const MultiplayerGame: React.FC<MultiplayerGameProps> = () => {
   const [chatMessage, setChatMessage] = useState('');
 
   const wsRef = useRef<WebSocket | null>(null);
-  const chatBottomRef = useRef<HTMLDivElement>(null);
   const lastMoveRef = useRef<{ from: string; to: string } | null>(null);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
 
   // Parse room from URL query if present (e.g. ?room=XYZ123)
   useEffect(() => {
@@ -158,8 +158,9 @@ export const MultiplayerGame: React.FC<MultiplayerGameProps> = () => {
 
   // Scroll chat to bottom
   useEffect(() => {
-    if (chatBottomRef.current) {
-      chatBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    const el = chatScrollRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
     }
   }, [room?.chat]);
 
@@ -440,7 +441,9 @@ export const MultiplayerGame: React.FC<MultiplayerGameProps> = () => {
 
   // Active Multiplayer Game UI
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
+    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6"
+      style={{ overflowAnchor: 'none' }}
+      >
       {/* Top Bar with room info & actions */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#24262f]">
         <div>
@@ -701,8 +704,8 @@ export const MultiplayerGame: React.FC<MultiplayerGameProps> = () => {
               </span>
             </div>
 
-            <div className="flex-1 overflow-y-auto space-y-2 pr-1 mb-2">
-              {room.chat.length === 0 ? (
+            <div ref={chatScrollRef} className="flex-1 overflow-y-auto space-y-2 pr-1 mb-2">
+  {room.chat.length === 0 ? (
                 <div className="text-[#606775] text-xs text-center py-8 italic">
                   Напишите сообщение оппоненту...
                 </div>
@@ -717,7 +720,6 @@ export const MultiplayerGame: React.FC<MultiplayerGameProps> = () => {
                   </div>
                 ))
               )}
-              <div ref={chatBottomRef} />
             </div>
 
             <form onSubmit={handleSendChat} className="flex items-center gap-2">
