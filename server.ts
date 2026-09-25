@@ -87,16 +87,17 @@ setInterval(() => {
       if (room.whiteTime <= 0) {
         room.status = 'timeout';
         room.winner = 'black';
-        broadcastRoom(room);
       }
     } else {
       room.blackTime = Math.max(0, room.blackTime - elapsed);
       if (room.blackTime <= 0) {
         room.status = 'timeout';
         room.winner = 'white';
-        broadcastRoom(room);
       }
     }
+
+    // Рассылаем обновление каждую секунду, а не только при таймауте
+    broadcastRoom(room);
   });
 }, 1000);
 
