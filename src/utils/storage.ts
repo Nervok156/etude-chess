@@ -3,6 +3,8 @@ import { Puzzle, PuzzleProgress, ProgressStats } from '../types.ts';
 const STORAGE_KEY = 'etude_chess_progress_v1';
 
 export function getStoredProgress(): Record<number, PuzzleProgress> {
+  // BR-04: проверка localStorage, а не window — исправлено по итогам
+  // отладки (день 6, коммит 650dc40). См. docs/bug-reports.md.
   if (typeof localStorage === 'undefined') return {};
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
