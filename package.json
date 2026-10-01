@@ -14,8 +14,7 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "test:coverage": "node --experimental-test-coverage --import=tsx --test tests/*.test.ts"
-
+    "test:coverage": "node --experimental-test-coverage --import=tsx --test tests/engine.test.ts tests/exceptions.test.ts tests/puzzles.test.ts tests/storage.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

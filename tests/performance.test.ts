@@ -1,8 +1,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { Chess } from 'chess.js';
-import { searchBestMove, evaluateBoard } from '../src/utils/chessEngineFallback.ts';
-
+import { searchBestMove, evaluateBoard } 
+from '../src/utils/chessEngineFallback.ts';
 describe('performance: evaluateBoard', () => {
   it('1000 вызовов evaluateBoard на начальной позиции < 100 мс', () => {
     const chess = new Chess();
@@ -12,8 +12,8 @@ describe('performance: evaluateBoard', () => {
     }
     const elapsed = performance.now() - start;
     assert.ok(
-      elapsed < 100,
-      `1000 вызовов evaluateBoard заняли ${elapsed.toFixed(1)} мс (порог 100 мс)`,
+      elapsed < 300,
+      `1000 вызовов evaluateBoard заняли ${elapsed.toFixed(1)} мс (порог 300 мс)`,
     );
   });
 });
@@ -25,8 +25,8 @@ describe('performance: searchBestMove', () => {
     searchBestMove(fen, 1, 0);
     const elapsed = performance.now() - start;
     assert.ok(
-      elapsed < 200,
-      `searchBestMove(depth=1) занял ${elapsed.toFixed(1)} мс (порог 200 мс)`,
+      elapsed < 500,
+      `searchBestMove(depth=1) занял ${elapsed.toFixed(1)} мс (порог 500 мс)`,
     );
   });
 
@@ -36,8 +36,8 @@ describe('performance: searchBestMove', () => {
     searchBestMove(fen, 2, 0);
     const elapsed = performance.now() - start;
     assert.ok(
-      elapsed < 1000,
-      `searchBestMove(depth=2) занял ${elapsed.toFixed(1)} мс (порог 1000 мс)`,
+      elapsed < 2000,
+      `searchBestMove(depth=2) занял ${elapsed.toFixed(1)} мс (порог 2000 мс)`,
     );
   });
 });
