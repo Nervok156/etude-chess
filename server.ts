@@ -5,6 +5,22 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Chess } from 'chess.js';
 
+// ─── Константы ──────────────────────────────────────────────
+/** Интервал тика таймеров партий (мс). */
+const TIMER_TICK_MS = 1000;
+
+/** Миллисекунд в одной секунде. */
+const MS_PER_SEC = 1000;
+
+/** Длительность партии по умолчанию (сек). */
+const DEFAULT_GAME_TIME_SEC = 600;
+
+/** Срок жизни сессии авторизации (мс). */
+const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+
+/** Максимум сообщений в чате комнаты. */
+const MAX_CHAT_MESSAGES = 50;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -39,7 +55,7 @@ interface RoomState {
 }
 
 const rooms = new Map<string, RoomState>();
-
+/** Рассылает текущее состояние комнаты обоим игрокам. */
 function broadcastRoom(room: RoomState) {
   const payload = JSON.stringify({
     type: 'ROOM_UPDATE',
@@ -77,7 +93,7 @@ setInterval(() => {
   rooms.forEach((room) => {
     if (room.status !== 'playing' || !room.lastMoveTimestamp) return;
 
-    const elapsed = Math.floor((now - room.lastMoveTimestamp) / 1000);
+    const elapsed = Math.floor((now - room.lastMoveTimestamp) / MS_PER_SEC);
     if (elapsed <= 0) return;
 
     room.lastMoveTimestamp = now;
@@ -99,7 +115,7 @@ setInterval(() => {
     // Рассылаем обновление каждую секунду, а не только при таймауте
     broadcastRoom(room);
   });
-}, 1000);
+}, TIMER_TICK_MS);
 
 wss.on('connection', (ws: WebSocket) => {
   let currentRoomId: string | null = null;
@@ -118,8 +134,8 @@ wss.on('connection', (ws: WebSocket) => {
 
         let room = rooms.get(validRoomId);
         if (!room) {
-          const time = (Number(timeMinutes) || 10) * 60;
-          room = {
+          const time = (Number(timeMinutes) || DEFAULT_GAME_TIME_SEC / 60) * 60;
+                    room = {
             roomId: validRoomId,
             fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             history: [],
@@ -270,7 +286,7 @@ wss.on('connection', (ws: WebSocket) => {
           const now = new Date();
           const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
           room.chat.push({ sender: senderName, text, time, color });
-          if (room.chat.length > 50) room.chat.shift();
+          if (room.chat.length > MAX_CHAT_MESSAGES) room.chat.shift();
           broadcastRoom(room);
         }
       }
@@ -295,6 +311,7 @@ wss.on('connection', (ws: WebSocket) => {
 });
 
 // Vite middleware in dev or static files in production
+/** Запускает Express-сервер и WebSocket для мультиплеера. */
 async function startServer() {
   const isProd = process.env.NODE_ENV === 'production';
   const port = process.env.PORT || 3000;
@@ -319,3 +336,4 @@ async function startServer() {
 }
 
 startServer();
+

@@ -2,15 +2,25 @@ import { Chess } from 'chess.js';
 import type { BotMoveResult, EngineEvaluation, SkillConfig } from './stockfish';
 
 // Piece square and positional weights for intelligent fallback evaluation
+/** Классические пешечные эквиваленты (значения из шахматной теории). */
 const PIECE_VALUES: Record<string, number> = {
-  p: 100,
-  n: 320,
-  b: 330,
-  r: 500,
-  q: 900,
-  k: 20000
+  p: 100,   // пешка
+  n: 320,   // конь
+  b: 330,   // слон
+  r: 500,   // ладья
+  q: 900,   // ферзь
+  k: 20000, // король (условно — бесконечность)
 };
 
+/** Оценка мата (победа). */
+const MATE_SCORE = 99999;
+
+/** Оценка «очень плохая позиция» (ниже любой реальной оценки материала). */
+const WORST_SCORE = 999999;
+
+/** Бонус за контроль центра. */
+const CENTER_BONUS_PAWN = 25;
+const CENTER_BONUS_PIECE = 15;
 // Center control squares
 const CENTER_SQUARES = new Set(['d4', 'e4', 'd5', 'e5', 'c4', 'c5', 'f4', 'f5']);
 
@@ -21,7 +31,7 @@ const CENTER_SQUARES = new Set(['d4', 'e4', 'd5', 'e5', 'c4', 'c5', 'f4', 'f5'])
 export function evaluateBoard(chess: Chess): number {
   if (chess.isCheckmate()) {
     // If the side whose turn it is is checkmated, evaluate against them
-    return chess.turn() === 'w' ? -99999 : 99999;
+    return chess.turn() === 'w' ? -MATE_SCORE : MATE_SCORE;
   }
   if (chess.isDraw() || chess.isStalemate()) {
     return 0;
@@ -86,7 +96,7 @@ export function searchBestMove(
     if (depth > 1) {
       const replies = chess.moves({ verbose: true });
       if (replies.length > 0) {
-        let bestOpponentVal = isWhite ? 999999 : -999999;
+        let bestOpponentVal = isWhite ? WORST_SCORE : -WORST_SCORE;
         for (const reply of replies) {
           chess.move(reply);
           const replyVal = evaluateBoard(chess);
