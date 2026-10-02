@@ -22,6 +22,7 @@ import {
 import { Chessboard } from './Chessboard.tsx';
 import { ChessPieceSvg } from './ChessPieceSvg.tsx';
 import { soundPlayer } from '../utils/audio.ts';
+import { formatTime } from '../utils/utils.ts';
 
 interface RoomPlayer {
   id: string;
@@ -247,13 +248,6 @@ export const MultiplayerGame: React.FC<MultiplayerGameProps> = () => {
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2500);
     });
-  };
-
-  // Format time (mm:ss)
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
   // Determine opponent player

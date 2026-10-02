@@ -33,6 +33,7 @@ import {
   EngineEvaluation
 } from '../utils/stockfish.ts';
 import { soundPlayer } from '../utils/audio.ts';
+import { formatTime } from '../utils/utils.ts';
 
 interface BotGameProps {
   onBackToCatalog?: () => void;
@@ -348,13 +349,6 @@ export const BotGame: React.FC<BotGameProps> = () => {
       message: 'Вы сдались. Игра завершена.'
     });
     setIsTimerRunning(false);
-  };
-
-  // Format seconds to mm:ss
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
   // Convert evaluation into display percentage / score

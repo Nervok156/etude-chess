@@ -15,6 +15,7 @@ import {
 import { Puzzle, PuzzleProgress } from '../types.ts';
 import { Chessboard } from './Chessboard.tsx';
 import { soundPlayer } from '../utils/audio.ts';
+import { formatTime } from '../utils/utils.ts';
 
 interface PuzzleSolverProps {
   puzzle: Puzzle;
@@ -205,13 +206,6 @@ export const PuzzleSolver: React.FC<PuzzleSolverProps> = ({
   const currentIndex = allPuzzles.findIndex((p) => p.id === puzzle.id);
   const prevPuzzle = currentIndex > 0 ? allPuzzles[currentIndex - 1] : null;
   const nextPuzzle = currentIndex < allPuzzles.length - 1 ? allPuzzles[currentIndex + 1] : null;
-
-  // Format timer MM:SS
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
