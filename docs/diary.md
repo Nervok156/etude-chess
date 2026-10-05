@@ -210,3 +210,34 @@
 
 ## Тестовая запись B
 Раздел создан в ветке feature/conflict-test-b для практики разрешения конфликтов.
+
+## День 13. Git Flow, релиз v1.0
+**Дата:** 05.10.2026
+
+Выполнено:
+1. Изучены стратегии ветвления: Git Flow, GitHub Flow, GitLab Flow, Trunk-Based.
+2. Выбрана стратегия GitHub Flow — обоснование в docs/git-strategy.md.
+3. Проведена практика разрешения конфликтов:
+   - созданы ветки feature/conflict-test-a и feature/conflict-test-b;
+   - обе меняли diary.md;
+   - при слиянии возник конфликт, разрешён объединением разделов;
+   - коммит 5e74c98.
+4. Подготовлен релиз 1.0:
+   - версия package.json обновлена до 1.0.0;
+   - создан CHANGELOG.md;
+   - тесты 35/35 pass;
+   - установлен тег v1.0;
+   - создан GitHub Release v1.0.
+5. Удалена старая ветка feature/coding-standards (осталась с дня 4).
+6. Ветка docs/day13-git-strategy с коммитами.
+7. Скриншот git log --graph сохранён.
+
+Артефакты дня:
+- docs/git-strategy.md
+- CHANGELOG.md
+- package.json версия 1.0.0
+- Тег v1.0, GitHub Release
+- docs/screenshots/git-graph.png
+
+Вывод: стратегия ветвления зафиксирована, конфликты разрешены,
+релиз 1.0 оформлен. Проект готов к финальной сдаче.
